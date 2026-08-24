@@ -1,0 +1,1467 @@
+% Program 1.1
+% Generation of Elementary signals in Discrete- time
+
+clc; close all; clear all;
+% Unit Impulse sequence
+n=-10:1:10;
+impulse=[zeros(1,10),ones(1,1),zeros(1,10)];
+subplot(2,2,1);stem(n,impulse);
+xlabel('Discrete time n - - >');ylabel('Amplitude - - >');
+title('Unit Impulse sequence');
+axis([-10 10 0 1.2]);
+
+% Unit Step sequence
+n=-10:1:10;
+step=[zeros(1,10),ones(1,11)];
+subplot(2,2,2);stem(n,step);
+xlabel('Discrete time n - - >');ylabel('Amplitude - - >');
+title('Unit Step sequence');
+axis([-10 10 0 1.2]);
+
+% Unit Ramp sequence
+n=0:1:10;
+ramp=n;
+subplot(2,2,3);stem(n,ramp);
+xlabel('Discrete time n - - >');ylabel('Amplitude - - >');
+title('Unit Ramp sequence');
+
+% Unit Parabolic sequence
+n=0:1:10;
+parabola=0.5*(n.^2);
+subplot(2,2,4);stem(n,parabola);
+xlabel('Discrete time n - - >');ylabel('Amplitude - - >');
+title('Unit Parabolic sequence');
+
+% Program 1.2
+% Generation of a Discrete- time exponential sequence
+
+clc;close all;clear all;
+n=-10:1:10;
+
+% for 0<a<1
+a=0.8;
+x1=a.^n;
+subplot(2,2,1);stem(n,x1);
+title('x1(n)for 0<a<1');
+
+% for a>1
+a=1.5;
+x2=a.^n;
+subplot(2,2,2);stem(n,x2);
+title('x2(n) for a>1');
+
+% for -1<a<0
+a=-0.8;
+x3=a.^n;
+subplot(2,2,3); stem(n,x3);
+title('x3(n) for - 1<a<0');
+
+% for a<- 1
+a=-1.2;
+x4=a.^n;
+subplot(2,2,4); stem(n,x4);
+title('x4(n) for a<- 1');
+xlabel('samples n');
+ylabel('sample amplitude');
+
+% Program 1.3
+% Multiplication of Discrete- time signals
+
+clc;close all;clear all;
+% x1(n)=6*a^n;
+n = 0:0.1:5;
+a = 2;
+x1 = 6*(a.^n);
+subplot(3,1,1); stem(n,x1);
+title('x1(n)');
+
+% x2(n)=2*cos(wn)
+f=1.2;
+x2=2*cos(2*pi*f*n);
+subplot(3,1,2); stem(n,x2);
+title('x2(n)');
+
+% multiplication of two sequences
+y=x1.*x2;
+subplot(3,1,3); stem(n,y);
+xlabel('time n');ylabel('amplitude');
+title('y(n)');
+
+% Program 1.4
+% Even and Odd components of the sequence y(n)=u(n)- u(n- 10)
+
+n=-15:1:15;
+y1=[zeros(1,15),ones(1,10),zeros(1,6)];
+y2=fliplr(y1);
+ye=0.5*(y1+y2);
+yo=0.5*(y1-y2);
+subplot(2,2,1);stem(n,y1);
+xlabel('time - - >');ylabel('Amplitude - - >');
+title('y(n)');
+subplot(2,2,2);stem(n,y2);
+xlabel('time - - >');ylabel('Amplitude - - >');
+title('y(- n)');
+subplot(2,2,3);stem(n,ye);
+xlabel('time - - >');ylabel('Amplitude - - >');
+title('ye(n)');
+subplot(2,2,4);stem(n,yo);
+xlabel('time - - >');ylabel('Amplitude - - >');
+title('yo(n)');
+
+% Program 1.5
+% Generation of the composite sequence x(n)=u(n+3)+5u(n-15)+4u(n+10)
+
+clc;close all;clear all;
+n=-20:1:20;
+u=[zeros(1,20),ones(1,21)];
+u1=[zeros(1,17),ones(1,24)];
+u2=[zeros(1,35),ones(1,6)];u2=5*u2;
+u3=[zeros(1,10),ones(1,31)];u3=4*u3;
+x=u1+u2+u3;
+subplot(4,1,1);stem(n,u1);
+title('u(n+3)');
+subplot(4,1,2);stem(n,u2);
+title('5u(n-15)');
+subplot(4,1,3);stem(n,u3);
+title('4u(n+10)');
+subplot(4,1,4);stem(n,x);
+title('x(n)');
+
+% Program 1.6
+% Generation of swept frequency sinusoidal signal
+
+clc; clear all; close all;
+n = 0:100;
+a = pi/2/100;
+b = 0;
+arg = a*n*n + b*n;
+x = cos(arg);
+stem(n,x);
+xlabel('Discrete time');
+ylabel('Amplitude');
+title('Swept- frequency sinusoidal signal');
+
+% Program 1.7
+% Checking the Time-invariance property
+
+clc; clear all; close all;
+n = 0:40; D = 10;
+x = 3*cos(2*pi*0.1*n) - 2*cos(2*pi*0.4*n);
+xd = [zeros(1, D) x];
+num = [2.2403 2.4908 2.2403];
+den = [1 -0.4 0.75];
+ic = [0 0];
+y = filter(num,den,x,ic);
+yd = filter(num,den,xd,ic);
+d = y - yd(1+D:41+D);
+subplot(3,1,1),stem(n,y);
+xlabel('Discrete time');
+ylabel('Amplitude');
+title('output y[n]');
+subplot(3,1,2), stem(n,yd(1:41));
+xlabel('Discrete time');
+ylabel('Amplitude');
+title('output due to delayed input');
+subplot(3,1,3), stem(n,d);
+xlabel('Discrete time');
+ylabel('Amplitude');
+title('difference signal');
+
+% Program 1.8
+% Computation of impulse response
+
+clc; clear all; close all;
+N=40;
+num=[2.2403 2.4908 2.2403];
+den=[1 -0.4 0.75];
+y=impz(num,den,N);
+stem(y);
+xlabel('Discrete time');
+ylabel('Amplitude');
+title('Impulse response of the filter');
+
+% Program 1.9
+% Checking the linearity of a system
+
+clc; clear all; close all;
+n = 0:50;
+a = 2; b = -3;
+x1 = cos(2*pi*0.1*n);
+x2 = cos(2*pi*0.4*n);
+x = a*x1 + b*x2;
+num = [2.2403 2.4908 2.2403];
+den = [1 -0.4 0.75];
+ic = [0 0];
+y1 = filter(num,den,x1,ic);
+y2 = filter(num,den,x2,ic);
+y = filter(num,den,x,ic);
+yt = a*y1 + b*y2;
+d = y - yt;
+subplot(3,1,1);stem(n,y);
+xlabel('Discrete time');
+ylabel('Amplitude');
+title('output due to weighted input');
+subplot(3,1,2);stem(n,yt);
+xlabel('Discrete time');
+ylabel('Amplitude');
+title('Weighted output');
+subplot(3,1,3);stem(n,d);
+xlabel('Discrete time');
+ylabel('Amplitude');
+title('difference signal');
+
+% Program 1.10
+% Testing the stability of a system
+
+clc; clear all; close all;
+num = [1 -0.8];
+den = [1 1.5 0.9];
+N=200;
+h = impz(num,den,N+1);
+parsum = 0;
+for k = 1:N+1
+    parsum = parsum + abs(h(k));
+    if abs(h(k))<10^(-6)
+        break;
+    end
+end
+stem(h);
+xlabel('Discrete time');
+ylabel('Amplitude');
+disp('Value=');
+disp(abs(h(k)));
+
+
+% Program 2.1
+% Convolution of two sequences
+
+clc; clear all; close all;
+x1=[1 2 0 1];
+x2=[2 2 1 1];
+y=conv(x1,x2);
+disp('the convolution output is');
+disp(y);
+subplot(3,1,1),stem(x1);
+xlabel('Discrete time');
+ylabel('Amplitude');
+title('first input sequence');
+subplot(3,1,2),stem(x2);
+xlabel('Discrete time');
+ylabel('Amplitude');
+title('Second input sequence');
+subplot(3,1,3),stem(y);
+xlabel('Discrete time');
+ylabel('Amplitude');
+title('convolution output');
+
+% Program 2.2
+% Linear convolution via circular convolution
+
+clc; clear all; close all;
+x1=[1 2 3 4 5];
+x2=[2 2 0 1 1];
+x1e=[x1 zeros(1,length(x2)-1)];
+x2e=[x2 zeros(1,length(x1)-1)];
+ylin=cconv(x1e,x2e,length(x1e));
+disp('linear convolution via circular convolution');
+disp('ylin');
+y=conv(x1,x2);
+disp('Direct convolution');
+disp(y);
+
+% Program 2.3
+% Linear convolution using DFT
+
+clc; clear all; close all;
+x=[1 2];
+h=[2 1];
+x1=[x zeros(1,length(h)-1)];
+h1=[h zeros(1,length(x)-1)];
+X=fft(x1);
+H=fft(h1);
+y=X.*H;
+y1=ifft(y);
+disp('the linear convolution of the given sequence');
+disp(y1);
+
+% Program 2.4
+% Circular convolution using DFT based approach
+
+clc; clear all; close all;
+x1=[1 2 0 1];
+x2=[2 2 1 1];
+d4=[1 1 1 1;1 -j -1 j;1 -1 1 -1;1 j -1 -j];
+x11=d4*x1';
+x21=d4*x2';
+X=x11.*x21;
+x=conj((d4)*X/4);
+disp('circular convolution by using DFT method');
+disp(x);
+x3=cconv(x1,x2,4);
+disp('circular convolution by using time domain method');
+disp(x3);
+
+% Program 2.5
+% Computation of correlation
+
+x1=[1 3 0 4];
+y=xcorr(x1,x1);
+subplot(2,1,1);stem(x1);
+xlabel('Discrete time');
+ylabel('Amplitude');
+title('input sequence');
+subplot(2,1,2);stem(y);
+title('Autocorrelation of the input sequence');
+xlabel('Discrete time');
+ylabel('Amplitude');
+
+
+% Program 3.1
+% Z- transform and Inverse Z- transform of given signals
+
+clc; clear all; close all;
+syms n wo
+
+% first signal
+a = n+1;
+disp('The input equation is');
+disp(a);
+b = ztrans(a);
+disp('The z- transform is');
+disp(b);
+c = iztrans(b);
+disp('The inverse z- transform is');
+disp(c);
+
+% second signal
+a1 = cos(wo*n);
+disp('The input equation is');
+disp(a1);
+b1 = ztrans(a1);
+disp('The z- transform is');
+disp(b1);
+c1 = iztrans(b1);
+disp('The inverse z- transform is');
+disp(c1);
+
+% Program 3.2
+% Finding the residues of Z^3 / ((z - 0.5)*(z - 0.75)*(z - 1))
+
+clc; clear all; close all;
+syms z
+d = (z - 0.5)*(z - 0.75)*(z - 1); % The denominator of F(z)
+a1 = collect(d);
+den = sym2poly(a1);
+num = [0 1 0 0];
+[num1,den1] = residue(num,den);
+fprintf('r1 = %4.2f\t', num1(1));
+fprintf('p1 = %4.2f\t', den1(1));
+fprintf('r2 = %4.2f\t', num1(2));
+fprintf('p2 = %4.2f\t', den1(2));
+fprintf('r3 = %4.2f\t', num1(3));
+fprintf('p3 = %4.2f\t', den1(3));
+
+% Program 3.3
+% Inverse Z- transform by the polynomial division method
+% X(z) = (1 + 2*z^(-1) + z^(-2)) / (1 - z^(-1) + 0.3561*z^(-2))
+
+clc; clear all; close all;
+b=[1 2 1];
+a=[1 -1 0.3561];
+n=5; %number of power series points
+b=[b zeros(1,n-1)];
+[h,r]=deconv(b,a);
+disp('The terms of inverse z- transforms');
+disp(h);
+
+% Program 3.4
+% Inverse z- transform for the cascaded form using polynomial division method
+% x(z)=[N1(z)*N2(z)*N3(z)]/[D1(z)*D2(z)*D3(z)]
+% N1(z)=1- 0.22346Z^(-1)+z^(-2)
+% N2(z)=1- 0.437883Z^(-1)+z^(-2)
+% N3(z)=1+z^(-1)
+% D1(z)=1- 1.433509Z^(-1)+0.858112Z^(-2)
+% D2(z)=1- 1.293601Z^(-1)+0.556929z^(-2)
+% D3(z)=1- 0.612159Z^(-1)
+
+clc; clear all; close all;
+n=5; % number of power series points
+n1=[1 -0.22346 1];
+n2=[1 -0.4377883 1];
+n3=[1 1 0];
+d1=[1 -1.433509 0.85811];
+d2=[1 -1.293601 0.556929];
+d3=[1 -0.612159 0];
+b=[n1; n2; n3];
+a=[d1; d2; d3];
+[b,a]=sos2tf([b a]);
+b=[b zeros(1,n-1)];
+[x r]=deconv(b,a);
+disp('The first five values of inverse Z- transform are');
+disp(x);
+
+% Program 3.5
+% Pole- zero plot of a Butterworth band pass filter
+
+clc; clear all; close all;
+fs=1000; %sampling frequency
+alpha=3;
+alphas=20;
+wp=[200/500 300/500];
+ws=[50/500 450/500];
+[n wc]=buttord(wp,ws,alpha,alphas);
+[z p k]=butter(n,wp);
+zplane(z,p);
+title('Pole Zero plot');
+
+% Program 3.6
+% Convolution using Z-transform
+
+clc; clear all; close all;
+x1=[2 1 0 -1 3]; % x1=2+z^(-1)- z^(-3)+3*z^(-4)
+x2=[1 -3 2]; % x2=1- 3*z^(-1)+2*z^(-2)
+x3=conv(x1,x2); % x3=x1*x2;
+
+
+% Program 4.1
+% Parallel form realization of IIR filters
+
+clc; clear all; close all;
+num=[2 10 23 34 31 16 4];
+den=[36 78 87 59 26 7 1];
+[r1 p1 k1]=residuez(num,den);
+[r2 p2 k2]=residuez(num,den);
+disp('parallel form 1');
+disp('residues are');
+disp(r1);
+disp('poles are at');
+disp(p1);
+disp('constant value');
+disp(k1);
+disp('parallel form II');
+disp('residues are');
+disp(r2);
+disp('poles are at');
+disp(p2);
+disp('constant value');
+disp(k2);
+
+% Program 4.2
+% Direct form to cascade form conversion
+
+clc; clear all; close all;
+b=[4 5 6]; %numerator coefficients of direct form
+a=[1 2 3]; %denominator coefficients of direct form
+
+% compute gain coefficient
+b0=b(1);
+a0=a(1);
+b=b/b0;
+a=a/a0;
+
+m=length(b);
+n=length(a);
+
+if n > m
+    b= [b zeros(1,n-m)];
+elseif m > n
+    a= [a zeros(1,m-n)];
+end
+
+k = floor(n/2);
+B = zeros(k,3);
+A = zeros(k,3);
+
+if k*2 == n
+    b = [b 0];
+    a = [a 0];
+end
+
+broots = cplxpair(roots(b));
+aroots = cplxpair(roots(a));
+
+for i = 1:2:2*k
+    brow = broots(i:1:i+1,:);
+    brow = real(poly(brow));
+    B(fix((i+1)/2),:)=brow;
+    arow = aroots(i:1:i+1,:);
+    arow = real(poly(arow));
+    A(fix((i+1)/2),:)=arow;
+end
+
+disp('numerator coefficients of cascade form');
+disp(B);
+disp('denominator coefficients of cascade form');
+disp(A);
+
+% Program 4.3
+% Cascade form realization of FIR & IIR filters
+
+clc; clear all; close all;
+b=[4 5 6]; %numerator coefficients of direct form
+a=[1 2 3]; %denominator coefficients of direct form
+
+% compute gain coefficient
+b0=b(1);
+x=[1 2 3 8 9 6 4 7 1 0];% input sequence
+
+[k l]=size(b);
+n=length(x);
+w=zeros(k+1,n);
+w(1,:)=x;
+
+for i=1:1:k
+    w(i+1,:)=filter(b(i,:),a(i,:),w(i,:));
+end
+
+y=b0*w(k+1,:);
+disp('output of the final filter operation');
+disp(y);
+
+% Program 4.4
+% Cascade form to direct form conversion
+
+clc; clear all; close all;
+B=[4 5 6]; %numerator coefficients of cascade form
+A=[1 2 3]; %denominator coefficients of cascade form
+
+% compute gain coefficient
+b0=B(1);
+[k l]=size(B);
+b=[1];
+a=[1];
+
+for i=1:1:k
+    b=conv(b,B(i,:));
+    a=conv(a,A(i,:));
+end
+
+b=b*b0;
+disp('numerator coefficients of direct form');
+disp(b);
+disp('denominator coefficients of direct form');
+disp(a);
+
+% Program 4.5
+% Direct form to parallel form conversion
+
+clc; clear all; close all;
+b=[4 5 6]; %numerator coefficients of direct form
+a=[1 2 3]; %denominator coefficients of direct form
+
+m=length(b);
+n=length(a);
+[r1 p1 c]=residuez(b,a);
+p=cplxpair(p1,10000000*eps);
+p2=cplxpair(p1);
+
+I=[];
+for j=1:1:length(p2)
+    for i=1:1:length(p1)
+        if(abs(p1(i)-p2(j)) < 0.0001)
+            I=[I,i];
+        end
+    end
+end
+
+I=I';
+r=r1(I);
+K=floor(n/2);
+B=zeros(K,2);
+A=zeros(K,3);
+
+if K*2 == n
+    for i=1:2:n-2
+        Brow=r(i:1:i+1,:);
+        Arow=p(i:1:i+1,:);
+        [Brow Arow]=residuez(Brow,Arow,[]);
+        B(fix((i+1)/2),:)=real(Brow);
+        A(fix((i+1)/2),:)=real(Arow);
+    end
+    [Brow Arow]=residuez(r(n-1),p(n-1),[]);
+    B(K,:)=[real(Brow) 0];
+    A(K,:)=[real(Arow) 0];
+else
+    for i=1:2:n-1
+        Brow=r(i:1:i+1,:);
+        Arow=p(i:1:i+1,:);
+        [Brow Arow]=residuez(Brow,Arow,[]);
+        B(fix((i+1)/2),:)=real(Brow);
+        A(fix((i+1)/2),:)=real(Arow);
+    end
+end
+
+disp('numerator coefficients of parallel form');
+disp(B);
+disp('denominator coefficients of parallel form');
+disp(A);
+
+% Program 4.6
+% Parallel form to direct form conversion
+
+clc; clear all; close all;
+C = [0];
+A = [1 1 0.9;1 0.4 -0.4];
+B = [2 4;3 1];
+
+[K,L]=size(A);
+R = [];
+P = [];
+
+for i=1:1:K
+    [r p k]=residuez(B(i,:),A(i,:));
+    R = [R;r];
+    P = [P;p];
+end
+
+[b a]=residuez(R,P,C);
+b = b(:);
+a = a(:);
+
+disp('numerator coefficients of direct form');
+disp(b);
+disp('denominator coefficients of direct form');
+disp(a);
+
+% Program 5.1
+% Fourier transform and Inverse Fourier transform of a given sequence
+
+clc; clear all; close all;
+syms x;
+f = exp(-x^2);
+disp('The input equation is');
+disp(f);
+a = fourier(f);
+disp('The fourier transform of the input equation is');
+disp(a);
+b = fourier(a);
+disp('The Inverse fourier transform is');
+disp(b);
+
+% Program 5.2
+% Fourier transform of a signal % u(t+0.5)- u(t- 0.5)
+
+clc; close all; clear all;
+syms t w
+a = heaviside(t + 0.5) - heaviside(t - 0.5);
+subplot(2,1,1), ezplot(a, [-3 3]);
+b = fourier(a);
+subplot(2,1,2); ezplot(b, [-50 50]);
+axis([-50 50 -1 2]);
+
+% Program 5.3
+% Evaluation and plotting of DTFT of the transfer function of the form a = e^(-jw)
+% h(e) = [1 + 2*a^(-1)] / [1 - 0.2*a^(-1)]
+
+clc; clear all; close all;
+w=-2*pi:8*pi/511:2*pi;
+num=[1 2];
+den=[1 -0.2];
+h=freqz(num,den,w);
+subplot(2,1,1);plot(w/pi,real(h));
+xlabel('Normalized frequency');
+ylabel('Amplitude');
+title('Real part of the transfer function');
+subplot(2,1,2);plot(w/pi,imag(h));
+xlabel('Normalized frequency');
+ylabel('Amplitude');
+title('Imaginary part of the transfer function');
+
+figure;
+subplot(2,1,1);plot(w/pi,abs(h));
+xlabel('Normalized frequency');
+ylabel('Amplitude');
+title('Magnitude spectrum of the transfer function');
+subplot(2,1,2);plot(w/pi,angle(h));
+xlabel('Normalized frequency');
+ylabel('phase');
+title('phase of the transfer function');
+
+% Program 5.4
+% Time shifting property of DTFT
+
+clc; clear all; close all;
+w=-pi:2*pi/255:pi;
+d=10;
+num=1:15;
+h1=freqz(num,1,w);
+a=[zeros(1,d) num]; % shifting
+h2=freqz(a,1,w);
+subplot(2,1,1);plot(w/pi,abs(h1));
+xlabel('Normalized frequency');
+ylabel('Amplitude');
+title('magnitude spectrum of the original sequence');
+subplot(2,1,2); plot(w/pi,abs(h2));
+xlabel('Normalized frequency');
+ylabel('Amplitude');
+title('magnitude spectrum of the time shifted sequence');
+
+figure;
+subplot(2,1,1);plot(w/pi,angle(h1));
+xlabel('Normalized frequency');
+ylabel('phase');
+title('phase spectrum of the original sequence');
+subplot(2,1,2);plot(w/pi,angle(h2));
+xlabel('Normalized frequency');
+ylabel('phase');
+title('phase spectrum of the time shifted sequence');
+
+% Program 5.5
+% Frequency shifting property of DTFT
+
+clc; clear all; close all;
+w=-pi:2*pi/255:pi;
+wo=0.2*pi;
+num1=[1 3 5 7 5 11 13 17 18 21 12];
+I=length(num1);
+h1=freqz(num1,1,w);
+n=0:I-1;
+num2=exp(wo*i*n).*num1;
+h2=freqz(num2,1,w);
+subplot(2,1,1);plot(w/pi,abs(h1));
+xlabel('Normalized frequency');
+ylabel('Amplitude');
+title('magnitude spectrum of the original sequence');
+subplot(2,1,2);plot(w/pi,abs(h2));
+xlabel('Normalized frequency');
+ylabel('Amplitude');
+title('magnitude spectrum of the Frequency shifted sequence');
+
+figure;
+subplot(2,1,1);plot(w/pi,angle(h1));
+xlabel('Normalized frequency');
+ylabel('phase');
+title('phase spectrum of the original sequence');
+subplot(2,1,2);plot(w/pi,angle(h2));
+xlabel('Normalized frequency');
+ylabel('phase');
+title('phase spectrum of the Frequency shifted sequence');
+
+% Program 5.6
+% Time convolution property of DTFT
+
+clc; clear all; close all;
+w=-2*pi:2*pi/255:2*pi;
+x1=[1 3 5 7 5 11 13 17 18 21 12];
+x2=[1 -2 3 -2 1];
+y=conv(x1,x2);
+h1=freqz(x1,1,w);
+h2=freqz(x2,1,w);
+h=h1.*h2;
+h3=freqz(y,1,w);
+subplot(2,1,1); plot(w/pi,abs(h));
+xlabel('Normalized frequency');
+ylabel('Amplitude');
+title('magnitude spectrum of the product sequence');
+subplot(2,1,2); plot(w/pi,abs(h3));
+xlabel('Normalized frequency');
+ylabel('Amplitude');
+title('magnitude spectrum of the convolved sequence');
+
+figure;
+subplot(2,1,1);plot(w/pi,angle(h));
+xlabel('Normalized frequency');
+ylabel('phase');
+title('phase spectrum of the product sequence');
+subplot(2,1,2);plot(w/pi,angle(h3));
+xlabel('Normalized frequency');
+ylabel('phase');
+title('phase spectrum of the convolved sequence');
+
+% Program 5.7
+% Time reversal property of DTFT
+
+clc; clear all; close all;
+w=-2*pi:2*pi/255:2*pi;
+num=[1 2 3 4 5 6];
+I=length(num)-1;
+h1=freqz(num,1,w);
+h2=freqz(fliplr(num),1,w);
+h3=exp(w*I*i).*h2;
+subplot(2,1,1); plot(w/pi,abs(h1));
+xlabel('Normalized frequency');
+ylabel('Amplitude');
+title('magnitude spectrum of the original sequence');
+subplot(2,1,2);plot(w/pi,abs(h3));
+xlabel('Normalized frequency');
+ylabel('Amplitude');
+title('magnitude spectrum of the time- reversed sequence');
+
+figure;
+subplot(2,1,1); plot(w/pi,angle(h1));
+xlabel('Normalized frequency');
+ylabel('phase');
+title('phase spectrum of the original sequence');
+subplot(2,1,2); plot(w/pi,angle(h3));
+xlabel('Normalized frequency');
+ylabel('phase');
+title('phase spectrum of the time- reversed sequence');
+
+% Program 5.8
+% Frequency response of the given system
+
+clc; clear all; close all;
+num = [1 -1 3];
+den = [1 1/3 1/6];
+[h,om] = freqz(num,den);
+subplot(2,1,1);plot(om/pi,20*log10(abs(h)));
+xlabel('normalized frequency');
+ylabel('gain in db');
+title('magnitude response');
+subplot(2,1,2);plot(om/pi,angle(h));
+xlabel('Normalized Frequency');
+ylabel('phase in radians');
+title('phase response');
+
+% Program 5.9
+% Periodicity property of DTFT
+
+clc; clear all; close all;
+n = 1:10;
+x = (0.9*exp(i*pi/3)).^n;
+k = -200:200;
+w = (pi/100)*k;
+x1 = x*exp(-i*pi/100).^(n'*k);
+subplot(2,1,1); plot(w/pi,abs(x1));
+xlabel('Normalized frequency');
+ylabel('Amplitude');
+title('magnitude spectrum');
+subplot(2,1,2); plot(w/pi,angle(x1));
+xlabel('Normalized frequency');
+ylabel('phase');
+title('phase spectrum');
+
+% Program 6.1
+% Fourier series representation of a train of pulses
+
+clc; clear all; close all;
+syms t % symbolic Fourier Series computation
+T0 = 1; % T0: period
+m = heaviside(t) - heaviside(t - T0/4) + heaviside(t - 3*T0/4);
+x = 2 * m; % periodic signal
+
+N=20; % N: number of harmonics
+
+% computation of N Fourier series coefficients
+for k = 1:N
+    X1(k) = int(x*exp(-j*2*pi*(k-1)*t/T0), t, 0, T0)/T0;
+    X(k) = subs(X1(k));
+    w(k) = (k-1)*2*pi/T0; % harmonic frequencies
+end
+
+ezplot(x,[0 T0]),grid;
+title('input sequence');
+figure;
+subplot(2,1,1), stem(w,abs(X));
+title('magnitude of fourier series');
+subplot(2,1,2), stem(w,angle(X));
+title('phase of fourier series');
+
+% Program 6.2
+% Fourier series representation of a full wave rectified wave
+
+clc; clear all; close all;
+syms t
+T0 = 1;
+m = heaviside(t) - heaviside(t - T0);
+x = abs(cos(pi*t)) * m;
+N=20;
+
+% computation of N Fourier series coefficients
+for k = 1:N
+    X1(k) = int(x*exp(-j*2*pi*(k-1)*t/T0), t, 0, T0)/T0;
+    X(k) = subs(X1(k));
+    w(k) = (k-1)*2*pi/T0; % harmonic frequencies
+end
+
+ezplot(x,[0 T0]);grid;
+title('input sequence');
+figure;
+subplot(2,1,1);stem(w,abs(X));
+title('magnitude of fourier series');
+subplot(2,1,2); stem(w,angle(X));
+title('phase of fourier series');
+
+% Program 6.3
+% Direct computation of Discrete Fourier transform (matrix formulation)
+
+clc; clear all; close all;
+x=[1 -1 2 -2];
+I=length(x);
+y=x*dfmtx(I);
+disp('the discrete fourier transform of the input sequence is');
+disp(y);
+I1=length(y);
+y1=y*conj(dfmtx(I1))/I1;
+disp('the Inverse discrete fourier transform of the input sequence is');
+disp(y1);
+
+% Program 6.4
+% Linear convolution using DFT
+
+clc; clear all; close all;
+x=[1 2];
+h=[2 1];
+x1=[x zeros(1,length(h)-1)];
+h1=[h zeros(1,length(x)-1)];
+X=fft(x1);
+H=fft(h1);
+y=X.*H;
+y1=ifft(y);
+disp('the linear convolution of the given sequence');
+disp(y1);
+
+% Program 6.5
+% Circular convolution using DFT
+
+clc; clear all; close all;
+x = [1 2 1 2];
+h = [4 3 2 1];
+X = fft(x);
+H = fft(h);
+y = X.*H;
+y1 = real(ifft(y));
+disp('the circular convolution of the given sequence');
+disp(y1);
+
+% Program 6.6
+% Relation between DFTs of the periodic even and odd parts of a real sequence
+
+clc; clear all; close all;
+x = [1 2 4 2 6 32 6 4 2 zeros(1,247)];
+x1 = [x(1) x(256:-1:2)];
+xe = 0.5*(x + x1);
+xf = fft(x);
+xef = fft(xe);
+k = 0:255;
+subplot(2,1,1),plot(k/128,real(xf));
+title('real part of DFT sequence');
+subplot(2,1,2), plot(k/128,imag(xf));
+title('imaginary part of DFT sequence');
+figure;
+subplot(2,1,1), plot(k/128,real(xef));
+title('real part of DFT even sequence');
+subplot(2,1,2), plot(k/128,imag(xef));
+title('imaginary part of DFT even sequence');
+
+% Program 6.7
+% Parseval's relation of DFT
+% sum(x(t)^2)=(1/N)*(sum(x(w)).^2)
+
+clc; clear all; close all;
+x=[(1:128) (128:-1:1)];
+y=fft(x);
+y1=sum(x.*x);
+y2=length(x);
+y3=abs(y);
+y4=[sum(y3.*y3)]/y2;
+y5=y1-y4;
+disp('energy in time domain');
+disp(y1);
+disp('energy in Frequency domain');
+disp(y4);
+disp('error');
+disp(y5);
+
+% Program 6.8
+% Circular time shifting property of DFT
+
+clc; clear all; close all;
+x = [0 2 4 6 8 10 12 14 16];
+N = length(x) - 1;
+n = 0:N;
+M = 5; % Samples
+
+if abs(M) > length(x)
+    M = rem(M,length(x));
+end
+if M < 0
+    M = M + length(x);
+end
+
+y = [x(M+1:length(x)) x(1:M)];
+xf = fft(x);
+yf = fft(y);
+subplot(2,1,1), stem(n, abs(xf));
+title('Magnitude of DFT original sequence');
+subplot(2,1,2), stem(n, abs(yf));
+title('Magnitude of DFT Circularly shifted sequence');
+figure;
+subplot(2,1,1), stem(n, angle(xf));
+title('Phase of DFT original sequence');
+subplot(2,1,2), stem(n, angle(yf));
+title('phase of DFT Circularly shifted sequence');
+
+% Program 6.9
+% Gibbs phenomenon
+
+clc; clear all; close all;
+t = 0:.1:10;
+y1 = sin(t);
+plot(t,y1);
+y2 = sin(t) + sin(3*t)/3;
+figure;plot(t,y2);
+y3 = sin(t) + sin(3*t)/3 + sin(5*t)/5;
+figure;plot(t,y3);
+y4 = sin(t) + sin(3*t)/3 + sin(5*t)/5 + sin(7*t)/7;
+figure;plot(t,y4);
+
+t = 0:0.2:3.14;
+y = zeros(10,length(t));
+x = zeros(size(t));
+for k=1:2:19
+    x = x + sin(k*t)/k;
+    y((k+1)/2,:) = x;
+end
+figure;plot(y(1:2:9,:)');
+title('The building of a square wave: Gibbs effect');
+
+% Program 6.1
+% Fourier series representation of a train of pulses
+
+clc; clear all; close all;
+syms t % symbolic Fourier Series computation
+T0 = 1; % T0: period
+m = heaviside(t) - heaviside(t - T0/4) + heaviside(t - 3*T0/4);
+x = 2 * m; % periodic signal
+
+N=20; % N: number of harmonics
+
+% computation of N Fourier series coefficients
+for k = 1:N
+    X1(k) = int(x*exp(-j*2*pi*(k-1)*t/T0), t, 0, T0)/T0;
+    X(k) = subs(X1(k));
+    w(k) = (k-1)*2*pi/T0; % harmonic frequencies
+end
+
+ezplot(x,[0 T0]),grid;
+title('input sequence');
+figure;
+subplot(2,1,1), stem(w,abs(X));
+title('magnitude of fourier series');
+subplot(2,1,2), stem(w,angle(X));
+title('phase of fourier series');
+
+% Program 6.2
+% Fourier series representation of a full wave rectified wave
+
+clc; clear all; close all;
+syms t
+T0 = 1;
+m = heaviside(t) - heaviside(t - T0);
+x = abs(cos(pi*t)) * m;
+N=20;
+
+% computation of N Fourier series coefficients
+for k = 1:N
+    X1(k) = int(x*exp(-j*2*pi*(k-1)*t/T0), t, 0, T0)/T0;
+    X(k) = subs(X1(k));
+    w(k) = (k-1)*2*pi/T0; % harmonic frequencies
+end
+
+ezplot(x,[0 T0]);grid;
+title('input sequence');
+figure;
+subplot(2,1,1);stem(w,abs(X));
+title('magnitude of fourier series');
+subplot(2,1,2); stem(w,angle(X));
+title('phase of fourier series');
+
+% Program 6.3
+% Direct computation of Discrete Fourier transform (matrix formulation)
+
+clc; clear all; close all;
+x=[1 -1 2 -2];
+I=length(x);
+y=x*dfmtx(I);
+disp('the discrete fourier transform of the input sequence is');
+disp(y);
+I1=length(y);
+y1=y*conj(dfmtx(I1))/I1;
+disp('the Inverse discrete fourier transform of the input sequence is');
+disp(y1);
+
+% Program 6.4
+% Linear convolution using DFT
+
+clc; clear all; close all;
+x=[1 2];
+h=[2 1];
+x1=[x zeros(1,length(h)-1)];
+h1=[h zeros(1,length(x)-1)];
+X=fft(x1);
+H=fft(h1);
+y=X.*H;
+y1=ifft(y);
+disp('the linear convolution of the given sequence');
+disp(y1);
+
+% Program 6.5
+% Circular convolution using DFT
+
+clc; clear all; close all;
+x = [1 2 1 2];
+h = [4 3 2 1];
+X = fft(x);
+H = fft(h);
+y = X.*H;
+y1 = real(ifft(y));
+disp('the circular convolution of the given sequence');
+disp(y1);
+
+% Program 6.6
+% Relation between DFTs of the periodic even and odd parts of a real sequence
+
+clc; clear all; close all;
+x = [1 2 4 2 6 32 6 4 2 zeros(1,247)];
+x1 = [x(1) x(256:-1:2)];
+xe = 0.5*(x + x1);
+xf = fft(x);
+xef = fft(xe);
+k = 0:255;
+subplot(2,1,1),plot(k/128,real(xf));
+title('real part of DFT sequence');
+subplot(2,1,2), plot(k/128,imag(xf));
+title('imaginary part of DFT sequence');
+figure;
+subplot(2,1,1), plot(k/128,real(xef));
+title('real part of DFT even sequence');
+subplot(2,1,2), plot(k/128,imag(xef));
+title('imaginary part of DFT even sequence');
+
+% Program 6.7
+% Parseval's relation of DFT
+% sum(x(t)^2)=(1/N)*(sum(x(w)).^2)
+
+clc; clear all; close all;
+x=[(1:128) (128:-1:1)];
+y=fft(x);
+y1=sum(x.*x);
+y2=length(x);
+y3=abs(y);
+y4=[sum(y3.*y3)]/y2;
+y5=y1-y4;
+disp('energy in time domain');
+disp(y1);
+disp('energy in Frequency domain');
+disp(y4);
+disp('error');
+disp(y5);
+
+% Program 6.8
+% Circular time shifting property of DFT
+
+clc; clear all; close all;
+x = [0 2 4 6 8 10 12 14 16];
+N = length(x) - 1;
+n = 0:N;
+M = 5; % Samples
+
+if abs(M) > length(x)
+    M = rem(M,length(x));
+end
+if M < 0
+    M = M + length(x);
+end
+
+y = [x(M+1:length(x)) x(1:M)];
+xf = fft(x);
+yf = fft(y);
+subplot(2,1,1), stem(n, abs(xf));
+title('Magnitude of DFT original sequence');
+subplot(2,1,2), stem(n, abs(yf));
+title('Magnitude of DFT Circularly shifted sequence');
+figure;
+subplot(2,1,1), stem(n, angle(xf));
+title('Phase of DFT original sequence');
+subplot(2,1,2), stem(n, angle(yf));
+title('phase of DFT Circularly shifted sequence');
+
+% Program 6.9
+% Gibbs phenomenon
+
+clc; clear all; close all;
+t = 0:.1:10;
+y1 = sin(t);
+plot(t,y1);
+y2 = sin(t) + sin(3*t)/3;
+figure;plot(t,y2);
+y3 = sin(t) + sin(3*t)/3 + sin(5*t)/5;
+figure;plot(t,y3);
+y4 = sin(t) + sin(3*t)/3 + sin(5*t)/5 + sin(7*t)/7;
+figure;plot(t,y4);
+
+t = 0:0.2:3.14;
+y = zeros(10,length(t));
+x = zeros(size(t));
+for k=1:2:19
+    x = x + sin(k*t)/k;
+    y((k+1)/2,:) = x;
+end
+figure;plot(y(1:2:9,:)');
+title('The building of a square wave: Gibbs effect');
+
+
+% Program 7.1
+% Calculation of the DFT of a given sequence using FFT
+
+clc; clear all; close all;
+x = [2 2 2 2 1 1 1 1];
+y = fft(x);
+disp('the fft of the input sequence');
+disp(y);
+
+y1=abs(y);
+subplot(2,1,1),stem(y1);
+title('magnitude response');
+
+y2=angle(y);
+subplot(2,1,2),stem(y2);
+title('phase response');
+
+y3=ifft(y);
+disp('the inverse fft is');
+disp(y3);
+
+% Program 7.2
+% Linear convolution using FFT
+
+clc; clear all; close all;
+x = [1 2];
+h = [2 1];
+x1 = [x zeros(1, length(h)-1)];
+h1 = [h zeros(1, length(x)-1)];
+X = fft(x1);
+H = fft(h1);
+y = X.*H;
+y1 = ifft(y);
+disp('the linear convolution of the given sequence');
+disp(y1);
+
+% Program 7.3
+% Circular convolution using FFT
+
+clc; clear all; close all;
+x = [1 2 1 2];
+h = [4 3 2 1];
+X = fft(x);
+H = fft(h);
+y = X.*H;
+y1 = real(ifft(y));
+disp('the circular convolution of the given sequence');
+disp(y1);
+
+% Program 7.4
+% Plotting of DFT of sinusoidal wave
+
+clc; clear all; close all;
+t = 0:0.01:1;
+a = sin(2*pi*10*t) + sin(2*pi*100*t);
+b = fft(a);
+c = abs(b);
+d = length(a);
+e = c/d;
+subplot(2,1,1), plot(t,a);
+xlabel('time');
+ylabel('amplitude');
+title('input signal');
+subplot(2,1,2), plot(e);
+xlabel('frequency');
+ylabel('amplitude');
+title('fft of the input signal');
+
+% Program 8.1
+% Design of filter using Bilinear Transformation
+
+clc; clear all; close all;
+fs=1000; % sampling frequency
+fn=fs/2;
+fc=300; % cutoff frequency
+n=5;
+[z,p,k]=butter(n,fc/fn);
+b=k*poly(z); % zeros
+a=poly(p); % poles
+[h,om]=freqz(b,a,512,fs);
+subplot(2,1,1),plot(om,20*log10(abs(h)));
+xlabel('Normalized Frequency');
+ylabel('gain in db');
+title('magnitude response');
+subplot(2,1,2),plot(om,angle(h));
+xlabel('Normalized Frequency');
+ylabel('phase in radians');
+title('phase response');
+
+% Program 8.2
+% Butterworth low- pass filter
+
+clc; clear all; close all;
+alphas = 30; % pass band attenuation in dB
+alphap = 0.5; % stop band attenuation in dB
+fpass = 1000; % pass band frequency in Hz
+fstop = 1500; % stop band frequency in Hz
+fsam = 5000; % sampling frequency in Hz
+
+wp = 2*fpass/fsam;
+ws = 2*fstop/fsam; % pass band and stop band frequencies
+[n,wn] = buttord(wp,ws,alphap,alphas); % minimal order, half- power frequency
+[b,a] = butter(n,wn); % coefficients of designed filter
+[h,w] = freqz(b,a);
+subplot(2,1,1);plot(w/pi,20*log10(abs(h)));
+xlabel('Normalized Frequency');
+ylabel('gain in db');
+title('magnitude response');
+subplot(2,1,2);plot(w/pi,angle(h));
+xlabel('Normalized Frequency');
+ylabel('phase in radians');
+title('phase response');
+
+% Program 8.3
+% Butterworth high-pass filter
+
+clc; clear all; close all;
+alphap = 50; % pass band attenuation in dB
+alphas = 1; % stop band attenuation in dB
+fp = 1050; % pass band frequency in Hz
+fs = 600; % stop band frequency in Hz
+fsam = 3500; % sampling frequency in Hz
+
+wp = 2*fp/fsam;
+ws = 2*fs/fsam;
+[n,wn] = buttord(wp,ws,alphap,alphas); % minimal order, half- power frequency
+[b,a] = butter(n,wn,'high'); % coefficients of the designed filter
+[h,w] = freqz(b,a);
+subplot(2,1,1),plot(w/pi,20*log10(abs(h)));
+xlabel('Normalized Frequency');
+ylabel('gain in db');
+title('magnitude response');
+subplot(2,1,2),plot(w/pi,angle(h));
+xlabel('Normalized Frequency');
+ylabel('phase in radians');
+title('phase response');
+
+% Program 8.4
+% Butterworth band stop filter
+
+clc; clear all; close all;
+ws=[0.4 0.6]; % stop band frequency in radians
+wp=[0.3 0.7]; % pass band frequency in radians
+alphap=0.4; % pass band attenuation in dB
+alphas=50; % stop band attenuation in dB
+
+[n,wn] = buttord(wp,ws,alphap,alphas);
+[b,a]=butter(n,wn,'stop');
+[h,w] = freqz(b,a);
+subplot(2,1,1);plot(w/pi,20*log10(abs(h)));
+xlabel('Normalized Frequency');
+ylabel('gain in db');
+title('magnitude response');
+subplot(2,1,2);plot(w/pi,angle(h));
+xlabel('Normalized Frequency');
+ylabel('phase in radians');
+title('phase response');
+
+% Program 8.5
+% Chebyshev filter low-pass type-1
+
+clc; clear all; close all;
+alphap = 0.15; % pass band attenuation in dB
+alphas = 0.9; % stop band attenuation in dB
+wp = 0.3*pi; % pass band frequency in radians
+ws = 0.5*pi; % stop band frequency in radians
+
+[n,wn] = cheb1ord(wp/pi,ws/pi,alphap,alphas);
+[b,a] = cheby1(n,alphap,wn); % coefficients of designed filter
+[h,w] = freqz(b,a);
+subplot(2,1,1);plot(w/pi,20*log10(abs(h)));
+xlabel('Normalized Frequency');
+ylabel('gain in db');
+title('magnitude response');
+subplot(2,1,2);plot(w/pi,angle(h));
+xlabel('Normalized Frequency');
+ylabel('phase in radians');
+title('phase response');
+
+% Program 8.6
+% Chebyshev filter high-pass type-1
+
+clc; clear all; close all;
+alphap = 1; % pass band attenuation in dB
+alphas = 15; % stop band attenuation in dB
+wp = 0.3*pi; % pass band frequency in radians
+ws = 0.2*pi; % stop band frequency in radians
+
+[n,wn] = cheb1ord(wp/pi,ws/pi,alphap,alphas);
+[b,a] = cheby1(n,alphap,wn,'high'); % coefficients of designed filter
+[h,w] = freqz(b,a);
+subplot(2,1,1),plot(w/pi,20*log10(abs(h)));
+xlabel('Normalized Frequency');
+ylabel('gain in db');
+title('magnitude response');
+subplot(2,1,2), plot(w/pi, angle(h));
+xlabel('Normalized Frequency');
+ylabel('phase in radians');
+title('phase response');
+
+% Program 8.7
+% Chebyshev band pass filter type-1
+
+clc; clear all; close all;
+Wp = [60 200]/500;
+Ws = [50 250]/500;
+alphap = 3; % pass band attenuation in dB
+alphas = 40; % stop band attenuation in dB
+
+[n,Wp] = cheb1ord(Wp,Ws,alphap,alphas);
+[b,a] = cheby1(n,alphap,Wp);
+[h,w] = freqz(b,a);
+subplot(2,1,1);plot(w/pi,20*log10(abs(h)));
+xlabel('Normalized Frequency');
+ylabel('gain in db');
+title('magnitude response');
+subplot(2,1,2);plot(w/pi,angle(h));
+xlabel('Normalized Frequency');
+ylabel('phase in radians');
+title('phase response');
+
+% Program 8.8
+% Chebyshev low- pass filter type- 2
+
+clc; clear all; close all;
+Wp = 40/500; % pass band frequency in radians
+Ws = 150/500; % stop band frequency in radians
+alphap = 3; % pass band attenuation in dB
+alphas = 40; % stop band attenuation in dB
+
+[n,Ws] = cheb2ord(Wp,Ws,alphap,alphas);
+[b,a] = cheby2(n,alphas,Ws);
+[h,w] = freqz(b,a);
+subplot(2,1,1);plot(w/pi,20*log10(abs(h)));
+xlabel('Normalized Frequency');
+ylabel('gain in db');
+title('magnitude response');
+subplot(2,1,2);plot(w/pi,angle(h));
+xlabel('Normalized Frequency');
+ylabel('phase in radians');
+title('phase response');
+
+% Program 8.9
+% Chebyshev band pass filter type-2
+
+clc; clear all; close all;
+Wp = [60 200]/500; % pass band frequency in radians
+Ws = [50 250]/500; % stop band frequency in radians
+alphap = 3; % pass band attenuation in dB
+alphas = 40; % stop band attenuation in dB
+
+[n,Ws] = cheb2ord(Wp,Ws,alphap,alphas);
+[b,a] = cheby2(n,alphas,Ws);
+[h,w] = freqz(b,a);
+subplot(2,1,1);plot(w/pi,20*log10(abs(h)));
+xlabel('Normalized Frequency');
+ylabel('gain in db');
+title('magnitude response');
+subplot(2,1,2);plot(w/pi,angle(h));
+xlabel('Normalized Frequency');
+ylabel('phase in radians');
+title('phase response');
+
